@@ -2526,13 +2526,13 @@ mat3 RotateY(float angle) {
 void main() {
   vec4 pos = position;
   float timer = float(time) / 10.0;
-  timer += Perlin2D(vec2(index * 88.88,index)) * 100.0;
+  timer += Perlin2D(vec2(index * 88.88,index * 9642.47)) * 100.0;
   pos.xyz = RotateY(radians(timer)) * pos.xyz;
   
   pos.x += Perlin2D(vec2(index * 550.12, index)) * (renderSize.x/2);
   pos.y += Perlin2D(vec2(index, index * 610.67)) * (renderSize.y/2);
-  pos.z += (Perlin2D(vec2(index * 295.13, index * 295.13)) - 0.5) * 50.0;
-
+  //pos.z += (Perlin2D(vec2(index * 295.13, index * 295.13)) + 1.0) * 500.0;
+  pos.z = -65.;
   pos = transform * pos;
 
   gl_Position = pos;
