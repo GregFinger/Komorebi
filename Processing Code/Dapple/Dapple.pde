@@ -6,8 +6,6 @@ PGraphics pg;
 int windowWidth = 406;
 int windowHeight = 720;
 
-float leafScalar = 10.0;
-
 //import peasy.*;
 //PeasyCam cam;
 
@@ -16,11 +14,9 @@ void setup() {
   //fullScreen(P3D);
   background(0);
   pg = createGraphics(windowWidth, windowHeight, P3D);
-  //float fov = PI/4.0;
-  //float cameraZ = (height/2.0) / tan(fov/2.0);
+  float fov = PI/4.0;
+  float cameraZ = (height/2.0) / tan(fov/2.0);
 
-  //pg.perspective(fov, float(width)/float(height), cameraZ/10.0, cameraZ*100.0);
-  //ortho();
   //cam = new PeasyCam(this, float(width)/2, float(height)/2, 0, 1000); 
   dappShader = loadShader("leaffrag.glsl", "leafvert.glsl");
   dappShader.set("renderSize", float(windowWidth), float(windowHeight));  
@@ -37,6 +33,7 @@ void draw() {
 
   pg.beginDraw();
   pg.camera(windowWidth/2, windowHeight/2, 1, windowWidth/2, windowHeight/2, 0, 0, 1, 0);
+  pg.perspective(degrees(60.0), float(windowWidth)/float(windowHeight), 0.01, 1000.0);  
   pg.translate(windowWidth/2, windowHeight/2); 
   pg.background(255, 250, 244);
   pg.shader(dappShader);
@@ -62,10 +59,10 @@ PShape createLeaves(PImage tex) {
   sh.noStroke();
   sh.texture(tex);
   for (int i = 0; i <= 144; i++) {
-    sh.vertex(-0.5 * leafScalar, -0.5 * leafScalar, 0, 0);
-    sh.vertex(0.5 * leafScalar, -0.5 * leafScalar, 1, 0);
-    sh.vertex(0.5 * leafScalar, 0.5 * leafScalar, 1, 1);
-    sh.vertex(-0.5 * leafScalar, 0.5 * leafScalar, 0, 1);
+    sh.vertex(-0.5, -0.5, 0, 0, 0);
+    sh.vertex(0.5, -0.5, 0, 1, 0);
+    sh.vertex(0.5, 0.5, 0, 1, 1);
+    sh.vertex(-0.5, 0.5, 0, 0, 1);
     sh.attrib("index", float(i) / 144.0);
   }
   sh.endShape(); 

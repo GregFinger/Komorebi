@@ -2528,11 +2528,11 @@ void main() {
   float timer = float(time) / 10.0;
   timer += Perlin2D(vec2(index * 88.88,index * 9642.47)) * 100.0;
   pos.xyz = RotateY(radians(timer)) * pos.xyz;
-  
-  pos.x += Perlin2D(vec2(index * 550.12, index)) * (renderSize.x/2);
-  pos.y += Perlin2D(vec2(index, index * 610.67)) * (renderSize.y/2);
+  //pos.x = 0.5;
+  //pos.x += Perlin2D(vec2(index * 550.12, index)) * (renderSize.x/2);
+  //pos.y += Perlin2D(vec2(index, index * 610.67)) * (renderSize.y/2);
   //pos.z += (Perlin2D(vec2(index * 295.13, index * 295.13)) + 1.0) * 500.0;
-  pos.z = -65.;
+  pos.z = -1.;
   pos = transform * pos;
 
   gl_Position = pos;
