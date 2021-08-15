@@ -32,8 +32,8 @@ void draw() {
   // might be a bit more complex to integrate
 
   pg.beginDraw();
+  pg.perspective(degrees(60.0), float(windowWidth)/float(windowHeight), 0.01, 1000.0);
   pg.camera(windowWidth/2, windowHeight/2, 1, windowWidth/2, windowHeight/2, 0, 0, 1, 0);
-  pg.perspective(degrees(60.0), float(windowWidth)/float(windowHeight), 0.01, 1000.0);  
   pg.translate(windowWidth/2, windowHeight/2); 
   pg.background(255, 250, 244);
   pg.shader(dappShader);
