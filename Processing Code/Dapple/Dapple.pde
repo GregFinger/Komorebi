@@ -25,12 +25,6 @@ void setup() {
 }
 
 void draw() {
-
-  // This first block renders everything correctly (a "window" surrounded by black)
-  // except the leaves are blurry
-  // The second commented block, the leaves are more crisp/sharp, but creating the "window"
-  // might be a bit more complex to integrate
-
   pg.beginDraw();
   pg.perspective(degrees(60.0), renderWidth/renderHeight, 0.01, 1000.0);
   pg.camera(renderWidth/2, renderHeight/2, 1, renderWidth/2, renderHeight/2, 0, 0, 1, 0);
@@ -41,13 +35,7 @@ void draw() {
   pg.shape(leaves);
   pg.endDraw();
   image(pg, width/2 - (renderWidth/2), height/2 - (renderHeight/2));
-  /*
-  translate(width/2, height/2); 
-   background(255, 250, 244);
-   shader(dappShader);
-   dappShader.set("time", millis());
-   shape(leaves);
-   */
+
   String txt_fps = String.format(getClass().getName()+ "   [fps %6.2f]", frameRate);
   surface.setTitle(txt_fps);
 }
