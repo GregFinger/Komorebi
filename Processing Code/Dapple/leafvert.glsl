@@ -2640,26 +2640,24 @@ mat3 TDRotateZ(float radians) {
 
 void main() {
   vec4 pos = position;
-  float timer = float(time) / 10.0;
-  timer += Perlin2D(vec2(index * 88.88, index * 9642.47)) * 100.0;
-  pos.xyz = RotateY(radians(SimplexPerlin3D(vec3(vec2(index * 492.87), timer * 0.0025)) * 90.0)) * pos.xyz;
+  float timer = float(time) * .001;
+  float xRot = SimplexPerlin3D(vec3(vec2(index * 492.87), timer * 0.25));
+  pos.xyz = RotateY(radians(xRot) * 90.0) * pos.xyz;
 
   // random distribution
   pos.x += (gold_noise(vec2(5), index) - 0.5) * 1.333;
-  // add some jitter
-  pos.x += pow((SimplexPerlin3D(vec3(vec2(index * 555.12), timer * .025)) + 1.0) / 2.0, 5.0) * 0.01;
-  //pos.y += Perlin2D(vec2(index, index * 610.67)) * (renderSize.y/renderSize.x);
   pos.y += (gold_noise(vec2(2), index) - 0.5) * 2.5;
-
-  pos.z += (Perlin2D(vec2(index * 295.13, index * 295.13)) * 2.0) - 2.0;
-
+  pos.z += (Perlin2D(vec2(index * 295.13, index * 295.13)) * 2.0) - 2.0;  
+  // add some jitter
+  float xJit = (SimplexPerlin3D(vec3(vec2(index * 555.12), timer * 2.5)) + 1.0) / 2.0;
+  pos.x += pow(xJit, 5.0) * 0.01;
+  
   pos = transform * pos;
 
   vec4 colour = color;
   colour.a = Perlin2D(vec2(index) * 500.0);
   colour.a = map(colour.a, -1., 1., 0.4, 0.9);
 
-  
   gl_Position = pos;
   vertColor = colour;
   vertTexCoord = texMatrix * vec4(texCoord, 1.0, 1.0);
