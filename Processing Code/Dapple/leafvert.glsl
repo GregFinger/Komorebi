@@ -7,7 +7,7 @@ attribute vec2 texCoord;
 attribute float index;
 
 uniform int time;
-uniform vec2 renderSize;
+uniform vec2 resolution;
 
 varying vec4 vertColor;
 varying vec4 vertTexCoord;
@@ -2655,8 +2655,8 @@ void main() {
   pos = transform * pos;
 
   vec4 colour = color;
-  colour.a = Perlin2D(vec2(index) * 500.0);
-  colour.a = map(colour.a, -1., 1., 0.4, 0.9);
+  colour.a = gold_noise(vec2(36), index);
+  colour.a = map(colour.a, 0., 1., 0.4, 0.9);
 
   gl_Position = pos;
   vertColor = colour;
