@@ -8,7 +8,7 @@ PShape leaves;
 PShader leafShader;
 PGraphics leafRender;
 int leafCount = 256;
-float leafSize = 0.1;
+float leafSize = 0.15;
 
 PShape frame;
 PGraphics frameRender;
@@ -49,7 +49,7 @@ void draw() {
   leafShader.set("time", millis());
   leafRender.shape(leaves); 
   leafRender.filter(vignetteShader);
-  blurShader.set("Size",6.0);   
+  blurShader.set("Size",9.0);   
   leafRender.filter(blurShader);
   leafRender.endDraw();
   image(leafRender, width/2 - (renderWidth/2), height/2 - (renderHeight/2));
