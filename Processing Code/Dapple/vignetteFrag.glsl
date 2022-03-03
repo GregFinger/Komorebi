@@ -23,10 +23,10 @@ void main() {
   vec4 col = texture2D(texture, vertTexCoord.st);
   vec2 pixSize = size * resolution;
   // Calculate distance to edge.   
-  float distance = roundedBoxSDF(gl_FragCoord.xy - vec2(resolution)/2.0, pixSize / 2.0f, radius);
+  float distance = roundedBoxSDF(gl_FragCoord.xy - vec2(resolution)/2.0, pixSize / 2.0, radius);
 
   // Smooth the result (free antialiasing).
-  float smoothedAlpha = 1.0f-smoothstep(0.0f, edgeSoftness * 2.0f, distance);
+  float smoothedAlpha = 1.0-smoothstep(0.0, edgeSoftness * 2.0, distance);
 
   // Return the resultant shape.
   vec4 quadColor = vec4(col.rgb * smoothedAlpha, col.a);

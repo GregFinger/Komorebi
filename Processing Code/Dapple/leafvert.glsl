@@ -284,7 +284,7 @@ void main() {
   float timer = float(time) * .001; //milliseconds to seconds
   
   float scale = gold_noise(vec2(9), index);
-  scale = map(scale, 0, 1, 0.5, 1.0);
+  scale = map(scale, 0.0, 1.0, 0.5, 1.0);
   pos.xyz *= scale;
   
   float xRot = PerlNoise(vec3(vec2(index * 285.87), timer * 0.1));
@@ -298,11 +298,14 @@ void main() {
   pos.x += (gold_noise(vec2(5), index) - 0.5) * 1.333;
   pos.y += (gold_noise(vec2(2), index) - 0.5) * 2.5;
   pos.z += (gold_noise(vec2(6), index) - 1.5) * 2.0;  
+  
   // add some jitter
-  float xJit = (GradNoise(vec3(vec2(index * 5935.12), timer * 3.0)) + 1.0) / 2.0;
-  float yJit = (GradNoise(vec3(vec2(index * 324.43), timer * 2.0)) + 1.0) / 2.0;  
-  pos.x += (pow(xJit, 6.0) * 0.025) - 0.0125;
-  pos.y += (pow(yJit, 3.0) * 0.01) - 0.005;
+  float xJit = (GradNoise(vec3(vec2(index * 5.12), timer * 1.75)) + 1.0) / 2.0;
+  float yJit = (GradNoise(vec3(vec2(index * 3.43), timer * 1.75)) + 1.0) / 2.0;  
+  xJit = pow(xJit, 4.0);
+  yJit = pow(yJit, 4.0);
+  pos.x += (xJit - 0.5) * 0.05;
+  pos.y += (yJit - 0.5) * 0.05;
   
   pos = transform * pos;
 

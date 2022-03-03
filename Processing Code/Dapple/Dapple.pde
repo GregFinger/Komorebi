@@ -14,6 +14,7 @@ PShape frame;
 PGraphics frameRender;
 
 PShader blurShader;
+PShader blurLODShader;
 PShader vignetteShader;
 
 void setup() {
@@ -22,37 +23,38 @@ void setup() {
   renderWidth = width * widthRatio;
   renderHeight = height * heightRatio;  
   background(0);
-  leafRender = createGraphics(int(renderWidth), int(renderHeight), P3D);
+  leafRender = createGraphics(int(renderWidth / 2.0), int(renderHeight / 2.0), P3D);
+  ((PGraphicsOpenGL)leafRender).textureSampling(4);
   leafShader = loadShader("leafFrag.glsl", "leafVert.glsl");
   leafTex = loadImage("leaf-black.png");
   leaves = createLeaves(leafTex);
 
-  frameRender = createGraphics(int(renderWidth), int(renderHeight), P3D);
-  frame = createFrame();
+  frameRender = createGraphics(int(renderWidth / 2.0), int(renderHeight / 2.0), P3D);
+  frame = createFrame(); 
   
   blurShader = loadShader("blurFrag.glsl");
-  blurShader.set("Directions",16.0);
-  blurShader.set("Quality",4.0);  
+  blurLODShader = loadShader("blurLODFrag.glsl");
   vignetteShader = loadShader("vignetteFrag.glsl");
-  vignetteShader.set("size",0.7,0.8);
-  vignetteShader.set("radius",45.0);
+  vignetteShader.set("size",0.25,0.5);
+  vignetteShader.set("radius",5.0);
   vignetteShader.set("edgeSoftness",30.0);
 }
 
 void draw() {
+  
   leafRender.beginDraw();
   leafRender.perspective(degrees(60.0), renderWidth/renderHeight, 0.01, 1000.0);
   leafRender.camera(renderWidth/2, renderHeight/2, 1, renderWidth/2, renderHeight/2, 0, 0, 1, 0);
   leafRender.translate(renderWidth/2, renderHeight/2); 
-  leafRender.background(255, 250, 244);
+  leafRender.background(255, 250, 230);
   leafRender.shader(leafShader);
   leafShader.set("time", millis());
-  leafRender.shape(leaves); 
+  leafRender.shape(leaves);
   leafRender.filter(vignetteShader);
-  blurShader.set("Size",9.0);   
+  blurShader.set("Size",6.0);   
   leafRender.filter(blurShader);
   leafRender.endDraw();
-  image(leafRender, width/2 - (renderWidth/2), height/2 - (renderHeight/2));
+  image(leafRender, width/2 - (renderWidth/2), height/2 - (renderHeight/2), renderWidth, renderHeight);
 
   frameRender.beginDraw();
   frameRender.perspective(degrees(60.0), renderWidth/renderHeight, 0.01, 1000.0);
@@ -61,13 +63,14 @@ void draw() {
   frameRender.clear();
   frameRender.shape(frame);
   frameRender.filter(vignetteShader);
-  blurShader.set("Size",7.0); 
+  blurShader.set("Size",6.0); 
   frameRender.filter(blurShader);  
   frameRender.endDraw();
-  image(frameRender, width/2 - (renderWidth/2), height/2 - (renderHeight/2));
-
+  image(frameRender, width/2 - (renderWidth/2), height/2 - (renderHeight/2), renderWidth, renderHeight);
+ 
   String txt_fps = String.format(getClass().getName()+ "   [fps %6.2f]", frameRate);
   surface.setTitle(txt_fps);
+
 }
 
 PShape createLeaves(PImage tex) {
